@@ -220,6 +220,37 @@ footer{background:var(--black);color:var(--white);padding:60px 0 36px}
 .foot-col a:hover{color:var(--pink)}
 .foot-bottom{margin-top:50px;padding-top:24px;border-top:2px dashed #444;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-weight:500;font-size:13px;color:#aaa}
 
+/* ===== GAME (arcade) ===== */
+.arcade{background:var(--black);color:#fff}
+.cabinet{max-width:740px;margin:46px auto 0;background:var(--purple);border:4px solid #fff;border-radius:32px;box-shadow:10px 10px 0 var(--pink);padding:26px}
+.cab-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;padding:0 6px}
+.cab-top b{font-family:"Mochiy Pop One";font-size:15px;color:var(--lime)}
+.cab-top .dots{display:flex;gap:7px}
+.cab-top .dots i{width:13px;height:13px;border-radius:50%;border:2.5px solid #fff;display:inline-block}
+.cab-top .dots i:nth-child(1){background:var(--pink)}.cab-top .dots i:nth-child(2){background:var(--lime)}.cab-top .dots i:nth-child(3){background:var(--cyan)}
+.screen{background:#0a0a16;border:3px solid #fff;border-radius:20px;padding:30px 24px;text-align:center;position:relative;overflow:hidden;min-height:300px;display:grid;place-items:center}
+.screen.flash{animation:flash .25s}
+@keyframes flash{0%{background:#1e3a1e}100%{background:#0a0a16}}
+.g-scene{display:none;width:100%}
+.g-scene.on{display:block}
+.g-title{font-family:"Dela Gothic One";font-size:clamp(2rem,7vw,3.2rem);line-height:1;color:#fff;-webkit-text-stroke:2px var(--pink);text-shadow:3px 3px 0 var(--blue)}
+.g-sub{font-family:"Mochiy Pop One";font-size:14px;color:#bdbdff;margin:16px 0 24px}
+.hud{display:flex;justify-content:space-between;font-family:"Mochiy Pop One";font-size:14px;margin-bottom:24px}
+.hud .lab{color:#8888bb;font-size:11px;display:block}
+.hud .v{font-family:"Dela Gothic One";font-size:26px}
+.hud .v.lime{color:var(--lime)}.hud .v.pink{color:var(--pink)}.hud .v.cyan{color:var(--cyan)}
+.g-word{font-family:"Dela Gothic One";font-size:clamp(2.4rem,9vw,4rem);letter-spacing:.04em;line-height:1;margin-bottom:26px;user-select:none}
+.g-word span{color:#3a3a55}
+.g-word span.ok{color:var(--lime)}
+.g-word span.bad{color:var(--pink);text-decoration:underline wavy var(--pink)}
+.g-input{width:min(100%,360px);padding:13px 20px;border:3px solid var(--lime);border-radius:60px;background:#000;color:#fff;font-family:"Mochiy Pop One";font-size:18px;text-align:center;letter-spacing:.05em}
+.g-input:focus{outline:none;box-shadow:0 0 0 4px rgba(212,255,61,.3)}
+.g-rank{font-family:"Dela Gothic One";font-size:clamp(1.8rem,6vw,2.8rem);color:var(--lime);margin:6px 0 4px}
+.g-final{font-family:"Mochiy Pop One";font-size:15px;color:#fff}
+.g-final b{color:var(--cyan);font-size:20px}
+.g-best{font-family:"Mochiy Pop One";font-size:12px;color:#9a9ac8;margin-top:10px}
+.g-spark{position:absolute;pointer-events:none;font-size:20px;z-index:3}
+
 /* wavy divider */
 .wave{display:block;width:100%;height:40px}
 
@@ -247,6 +278,7 @@ footer{background:var(--black);color:var(--white);padding:60px 0 36px}
     <a href="#" class="logo"><span class="star">✦</span>Vellum</a>
     <nav class="nav-links">
       <a href="#features">きのう</a>
+      <a href="#game">あそぶ</a>
       <a href="#craft">こだわり</a>
       <a href="#pricing">りょうきん</a>
       <a href="#start" class="btn pink">はじめる ★</a>
@@ -357,6 +389,47 @@ footer{background:var(--black);color:var(--white);padding:60px 0 36px}
     </div>
   </section>
 
+  <!-- GAME -->
+  <section class="pad arcade" id="game">
+    <div class="wrap">
+      <div class="sec-head center" data-rv>
+        <span class="sec-tag" style="background:var(--pink);color:#fff">ミニゲーム</span>
+        <h2 class="sec-h" style="color:#fff">TYPE RUSH<br><span style="color:var(--lime)">かきまくれ！</span></h2>
+      </div>
+      <div class="cabinet" data-rv>
+        <div class="cab-top">
+          <b>★ VELLUM ARCADE</b>
+          <span class="dots"><i></i><i></i><i></i></span>
+        </div>
+        <div class="screen" id="screen">
+          <!-- start -->
+          <div class="g-scene on" id="g-start">
+            <div class="g-title">TYPE<br>RUSH</div>
+            <p class="g-sub">30秒で、出てくる単語を打ちまくれ！<br>キミは何ワード打てる？</p>
+            <button class="btn lime" id="g-go">▶ スタート</button>
+          </div>
+          <!-- play -->
+          <div class="g-scene" id="g-play">
+            <div class="hud">
+              <div><span class="lab">SCORE</span><span class="v lime" id="g-score">0</span></div>
+              <div><span class="lab">WORD</span><span class="v cyan" id="g-streak">0</span></div>
+              <div><span class="lab">TIME</span><span class="v pink" id="g-time">30</span></div>
+            </div>
+            <div class="g-word" id="g-word"></div>
+            <input class="g-input" id="g-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="ここに打つ…" aria-label="タイピング入力" />
+          </div>
+          <!-- over -->
+          <div class="g-scene" id="g-over">
+            <div class="g-rank" id="g-rank">GAME OVER</div>
+            <p class="g-final"><b id="g-final-score">0</b> ワード ／ <b id="g-wpm">0</b> WPM</p>
+            <p class="g-best" id="g-best"></p>
+            <button class="btn pink" id="g-retry" style="margin-top:18px">↻ もう一回</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- PRICING -->
   <section class="pad bg-cream" id="pricing">
     <div class="wrap">
@@ -444,6 +517,60 @@ function joinList(e){
   note.textContent='✓ サンキュー！順番にご招待を送ります ✦';
   return false;
 }
+
+/* ===== TYPE RUSH mini-game ===== */
+(function(){
+  const WORDS=['write','wild','free','vellum','star','pop','flow','ink','page','type','muse','draft','prose','remix','sparkle','y2k','neon','dream','loud','rush','quiet','focus','word','calm','wave','retro','funky','shine','vibe','chrome'];
+  const DURATION=30;
+  const $=id=>document.getElementById(id);
+  const screen=$('screen'),scenes={start:$('g-start'),play:$('g-play'),over:$('g-over')};
+  const wordEl=$('g-word'),input=$('g-input');
+  let word='',score=0,time=DURATION,seed=7,timer=null;
+  // deterministic-ish shuffle without Math.random reliance issues
+  const rnd=()=>{seed=(seed*1103515245+12345)&0x7fffffff;return seed/0x7fffffff};
+
+  function show(name){for(const k in scenes)scenes[k].classList.toggle('on',k===name)}
+  function pick(){word=WORDS[Math.floor(rnd()*WORDS.length)];render()}
+  function render(){
+    const v=input.value;let h='';
+    for(let i=0;i<word.length;i++){
+      let c='';if(i<v.length)c=v[i]===word[i]?'ok':'bad';
+      h+='<span class="'+c+'">'+word[i]+'</span>';
+    }
+    wordEl.innerHTML=h;
+  }
+  function hud(){$('g-score').textContent=score;$('g-streak').textContent=score;$('g-time').textContent=time}
+  function spark(){
+    const s=document.createElement('div');s.className='g-spark';s.textContent='✦';
+    s.style.left=(20+rnd()*60)+'%';s.style.top=(20+rnd()*50)+'%';s.style.color=['#D4FF3D','#FF3DA5','#3DE0FF'][score%3];
+    screen.appendChild(s);
+    s.animate([{transform:'scale(.4) rotate(0)',opacity:1},{transform:'scale(1.6) translateY(-30px) rotate(60deg)',opacity:0}],{duration:600,easing:'ease-out'});
+    setTimeout(()=>s.remove(),600);
+  }
+  function start(){
+    score=0;time=DURATION;input.value='';hud();show('play');pick();
+    input.focus();
+    timer=setInterval(()=>{time--;hud();if(time<=0)end()},1000);
+  }
+  function end(){
+    clearInterval(timer);
+    const wpm=score*Math.round(60/DURATION);
+    $('g-final-score').textContent=score;$('g-wpm').textContent=wpm;
+    let rank='ねぼけてる？';
+    if(score>=18)rank='WILD!!! 🔥';else if(score>=12)rank='ノッてる！★';else if(score>=7)rank='いいね！';else if(score>=3)rank='まだまだ〜';
+    $('g-rank').textContent=rank;
+    let best=0;try{best=parseInt(localStorage.getItem('vellum_best')||'0',10)}catch(e){}
+    if(score>best){best=score;try{localStorage.setItem('vellum_best',String(best))}catch(e){}}
+    $('g-best').textContent='ベストスコア: '+best+' ワード';
+    show('over');
+  }
+  input.addEventListener('input',()=>{
+    if(input.value===word){score++;spark();screen.classList.add('flash');setTimeout(()=>screen.classList.remove('flash'),250);input.value='';pick();hud();}
+    else render();
+  });
+  $('g-go').addEventListener('click',start);
+  $('g-retry').addEventListener('click',start);
+})();
 
 // sparkle cursor trail (lightweight)
 let last=0;
